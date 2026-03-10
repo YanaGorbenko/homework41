@@ -7,20 +7,16 @@ export interface Product {
   category: string;
 }
 
-export const getProducts = async () => {
-  const { data } = await axios.get<{ products: Product[] }>(
-    'https://dummyjson.com/products',
-  );
-  return data;
-};
+interface GetProductsOptions {
+  searchQuery?: string;
+}
 
-export const searchProducts = async (query: string) => {
-  if (!query.trim()) {
-    return { products: [] };
+export const getProducts = async (options: GetProductsOptions = {}) => {
+  const { searchQuery } = options;
+  let url = 'https://dummyjson.com/products';
+  if (searchQuery?.trim()) {
+    url = `https://dummyjson.com/products/search?q=${encodeURIComponent(searchQuery)}`;
   }
-
-  const { data } = await axios.get<{ products: Product[] }>(
-    `https://dummyjson.com/products/search?q=${encodeURIComponent(query)}`,
-  );
+  const { data } = await axios.get<{ products: Product[] }>(url);
   return data;
 };

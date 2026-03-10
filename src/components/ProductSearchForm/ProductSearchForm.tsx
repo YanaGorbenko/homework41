@@ -7,6 +7,9 @@ interface Props {
 export const ProductSearchForm = ({ onSearch }: Props) => {
   const searchProduct = (formData: FormData) => {
     const product = formData.get('product-title') as string;
+    if (!product.trim()) {
+      return;
+    }
     onSearch(product);
   };
 
