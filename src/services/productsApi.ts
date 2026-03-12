@@ -10,10 +10,8 @@ export interface Product {
 }
 
 export const getProducts = async (searchWord: string) => {
-  const url = searchWord ? '/search' : '/';
-
-  const { data } = await api.get<{ products: Product[] }>(url, {
-    params: searchWord ? { q: searchWord.trim() } : undefined,
+  const { data } = await api.get<{ products: Product[] }>('/search', {
+    params: { q: searchWord.trim() },
   });
 
   return data;
