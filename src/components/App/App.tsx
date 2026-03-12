@@ -38,7 +38,7 @@ export const App = () => {
     <>
       <h1>Список продуктів</h1>
       <ProductSearchForm onSearch={handleSearch} />
-      <ProductsList products={products} />
+      {!noResults && <ProductsList products={products} />}
       {isLoading && <p>LOADING...</p>}
       {isError && <p>Opps! It's error!</p>}
       {noResults && <p>Результатів не знайдено</p>}

@@ -13,10 +13,15 @@ interface GetProductsOptions {
 
 export const getProducts = async (options: GetProductsOptions = {}) => {
   const { searchQuery } = options;
-  let url = 'https://dummyjson.com/products';
+
+  const baseUrl = 'https://dummyjson.com/products';
+  const url = searchQuery?.trim() ? `${baseUrl}/search` : baseUrl;
+
+  const params: Record<string, string> = {};
   if (searchQuery?.trim()) {
-    url = `https://dummyjson.com/products/search?q=${encodeURIComponent(searchQuery)}`;
+    params.q = searchQuery;
   }
-  const { data } = await axios.get<{ products: Product[] }>(url);
+
+  const { data } = await axios.get<{ products: Product[] }>(url, { params });
   return data;
 };
