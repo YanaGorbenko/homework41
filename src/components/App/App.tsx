@@ -20,8 +20,7 @@ export const App = () => {
         setIsError(false);
         setIsLoading(true);
         setNoResults(false);
-        const options = searchQuery ? { searchQuery } : {};
-        const { products } = await getProducts(options);
+        const { products } = await getProducts(searchQuery);
         if (products.length === 0) {
           setNoResults(true);
         }

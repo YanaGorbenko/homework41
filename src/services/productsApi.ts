@@ -1,5 +1,7 @@
 import axios from 'axios';
-
+const api = axios.create({
+  baseURL: 'https://dummyjson.com/products',
+});
 export interface Product {
   id: number;
   title: string;
@@ -7,21 +9,12 @@ export interface Product {
   category: string;
 }
 
-interface GetProductsOptions {
-  searchQuery?: string;
-}
+export const getProducts = async (searchWord: string) => {
+  const url = searchWord ? '/search' : '/';
 
-export const getProducts = async (options: GetProductsOptions = {}) => {
-  const { searchQuery } = options;
+  const { data } = await api.get<{ products: Product[] }>(url, {
+    params: searchWord ? { q: searchWord.trim() } : undefined,
+  });
 
-  const baseUrl = 'https://dummyjson.com/products';
-  const url = searchQuery?.trim() ? `${baseUrl}/search` : baseUrl;
-
-  const params: Record<string, string> = {};
-  if (searchQuery?.trim()) {
-    params.q = searchQuery;
-  }
-
-  const { data } = await axios.get<{ products: Product[] }>(url, { params });
   return data;
 };
